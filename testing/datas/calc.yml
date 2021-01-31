@@ -1,9 +1,22 @@
 add:
-  datas:
-    - [1,1,2]
-    - [100,400,300]
-    - [1,0,1]
-    - [0.1,0.1,0.2]
-    - [-1,1,0]
-  ids: ['int','zero','bignum','minus','result0']
+  int:
+    datas:
+      - [1,1,2]
+      - [100,400,300]
+      - [1,0,1]
+      - [0.1,0.1,0.2]
+      - [-1,1,0]
+    ids: ['int','zero','bignum','minus','result0']
+
+div:
+  int_normal:
+    datas:
+      - [100,100,1]
+    ids: ['int','bignum']
+  int_error:
+    datas:
+      - [1,0,1]
+      - [-1,0,1]
+      - [0,0,1]
+    ids: ['int','bignum','a']
 
