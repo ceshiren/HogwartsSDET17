@@ -3,6 +3,7 @@
 
 import sys
 
+import allure
 import pytest
 import yaml
 
@@ -12,7 +13,7 @@ from pythoncode.Calculator import Calculator
 
 
 def get_datas(name, type='int'):
-    with open("./datas/calc.yml") as f:
+    with open("./datas/calc.yml", encoding='utf-8') as f:
         all_datas = yaml.safe_load(f)
     datas = all_datas[name][type]['datas']
     ids = all_datas[name][type]['ids']
@@ -38,6 +39,7 @@ def test_param(get_datas_with_fixture):
 
 # yaml json excel csv xml
 # 测试类
+@allure.feature("计算器")
 class TestCalc:
     # datas: list = get_datas()
     add_int_data = get_datas('add', 'int')
@@ -47,6 +49,8 @@ class TestCalc:
     # def test_add(self,get_instance, a, b, result):
     #     assert result == get_instance.add(a, b)
 
+    @allure.title("相加_{get_datas_with_fixture[0]}_{get_datas_with_fixture[1]}")
+    @allure.story("相加功能")
     def test_add(self, get_instance, get_datas_with_fixture):
         f = get_datas_with_fixture
         assert f[2] == get_instance.add(f[0], f[1])

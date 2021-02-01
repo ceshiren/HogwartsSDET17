@@ -6,7 +6,7 @@ add:
       - [1,0,1]
       - [0.1,0.1,0.2]
       - [-1,1,0]
-    ids: ['int','zero','bignum','minus','result0']
+    ids: ['整数','zero','bignum','minus','result0']
 
 div:
   int_normal:
@@ -18,5 +18,5 @@ div:
       - [1,0,1]
       - [-1,0,1]
       - [0,0,1]
-    ids: ['int','bignum','a']
+    ids: ['整数','bignum','a']
 
