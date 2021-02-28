@@ -3,14 +3,17 @@ import json
 from time import sleep
 
 from selenium import webdriver
+from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 
 
 class TestTmp():
     def setup_method(self, method):
+        # 声明 chrome 的参数
         chrome_arg = webdriver.ChromeOptions()
+        # 加入调试地址
         chrome_arg.debugger_address = '127.0.0.1:9222'
-        self.driver = webdriver.Chrome()
+        self.driver = webdriver.Chrome(options=chrome_arg)
         self.vars = {}
 
     def teardown_method(self, method):
