@@ -19,4 +19,3 @@ class MainPage:
     def goto_login(self):
         self.driver.find_element(By.XPATH, "//*[@class='index_top_operation_loginBtn']").click()
         return LoginPage(self.driver)
-
