@@ -6,6 +6,6 @@ class TestMarket:
         self.app = App()
 
     def test_goto_market(self):
-        self.app.start().goto_main().goto_market()
+        self.app.start().goto_main().goto_market().goto_search().search()
 
 

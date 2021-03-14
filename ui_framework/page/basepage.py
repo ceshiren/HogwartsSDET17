@@ -1,7 +1,9 @@
+import yaml
 from appium.webdriver.common.mobileby import MobileBy
 from appium.webdriver.webdriver import WebDriver
 from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.by import By
+
+from ui_framework.page.handle_black_list import handle_black
 
 
 class BasePage:
@@ -9,19 +11,9 @@ class BasePage:
     def __init__(self, driver: WebDriver = None):
         self.driver = driver
 
+    @handle_black
     def find(self, locator, value):
-        black_list = ['//*[@resource-id="com.xueqiu.android:id/iv_close"]']
-        try:
-            return self.driver.find_element(locator, value)
-        except Exception:
-            # 取出所有的妖魔鬼怪，一一进行处理
-            for ele_xpath in black_list:
-                # 用火眼晶晶去看，妖魔鬼怪是否存在
-                eles = self.finds(By.XPATH, ele_xpath)
-                # 妖魔鬼怪出现了，需要斩杀
-                if len(eles) > 0:
-                    eles[0].click()
-                    return self.find(locator, value)
+        return self.driver.find_element(locator, value)
 
     def finds(self, locator, value):
         return self.driver.find_elements(locator, value)
@@ -55,3 +47,22 @@ class BasePage:
                 end_y = height * 0.3
 
                 self.driver.swipe(start_x, start_y, end_x, end_y, 1000)
+
+    def parse(self, yaml_path, fun_name):
+        """
+        解析关键字，实现相应动作
+        :param yaml_path:
+        :param fun_name:
+        :return:
+        """
+        with open(yaml_path, "r", encoding="utf-8") as f:
+            function = yaml.load(f)
+            # 从关键字中取出一个函数
+        steps = function.get(fun_name)
+        # 解析每一组关键字
+        for step in steps:
+            # 如果发现关键字是 find_and_click ，就调用已经封装好的 find_and_click 即可
+            if step.get("action") == "find_and_click":
+                self.find_and_click(step.get('locator'), step.get('value'))
+            elif step.get("action") == "find_and_send":
+                self.find_and_send(step.get('locator'), step.get('value'), step.get('content'))
