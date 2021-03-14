@@ -4,6 +4,7 @@ from appium.webdriver.webdriver import WebDriver
 from selenium.common.exceptions import NoSuchElementException
 
 from ui_framework.page.handle_black_list import handle_black
+from ui_framework.page.logger import log
 
 
 class BasePage:
@@ -23,6 +24,10 @@ class BasePage:
 
     def find_and_send(self, locator, value, content):
         self.find(locator, value).send_keys(content)
+
+    def screenshot(self):
+        # self.driver.save_screenshot("tmp.png")
+        return self.driver.get_screenshot_as_png()
 
     def swipe_find(self, text, num=3):
         for i in range(num):
