@@ -1,0 +1,13 @@
+@startuml
+
+participant 客户端 as req
+participant mitmproxy as mitm
+participant 服务端 as res
+autonumber
+
+req -> mitm: 发起请求(map_local)
+mitm -> res: 转发请求
+res -> mitm: 返回给mitmproxy 响应信息
+mitm -> mitm: 修改响应信息(rewrite)
+
+@enduml

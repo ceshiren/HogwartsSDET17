@@ -1,0 +1,13 @@
+@startuml
+participant 请求信息 as req
+participant mitmproxy as mitm
+participant "模板文件" as tem
+participant "结果文件" as res
+
+autonumber
+
+req -> mitm: 拦截请求，\n获取请求信息
+mitm -> tem: 把请求信息给到\n模板文件做数据填充
+tem -> res: 填充好之后的模板文件\n生成一个接口自动化脚本
+
+@enduml
