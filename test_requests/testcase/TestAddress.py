@@ -1,6 +1,6 @@
 import pytest
 
-from test_requests.wework.WeworkAddress import WeworkAddress
+from test_requests.wework.wework_address import WeworkAddress
 
 
 class TestAddress:
@@ -9,7 +9,6 @@ class TestAddress:
 
     def setup_class(self):
         self.address = WeworkAddress()
-
         self.mobile = "13790776890"
         self.department = [1]
 
@@ -36,9 +35,9 @@ class TestAddress:
         info = self.address.get_information(self.user_id)
         assert info['name'] == self.name
 
-    @pytest.mark.parametrize("user_id, new_name", [("tmp", name + "tmp")]*30)
+    @pytest.mark.parametrize("user_id, new_name", [("tmp", name + "tmp")]*5)
     def test_update_member(self, user_id, new_name):
-        user_id += self.user_id
+        user_id = self.user_id
         self.address.create_member(user_id, self.name, self.mobile, self.department)
         r = self.address.update(user_id, new_name)
         assert r.get("errmsg") == "updated"
@@ -47,7 +46,7 @@ class TestAddress:
         assert info['name'] == new_name
 
     def test_delte_member(self):
-        self.address.create_member(self.user_id, self.name, self.mobile, self.department)
+        r = self.address.create_member(self.user_id, self.name, self.mobile, self.department)
         r = self.address.delete(self.user_id)
         assert r.get("errmsg") == "deleted"
         # 断言
