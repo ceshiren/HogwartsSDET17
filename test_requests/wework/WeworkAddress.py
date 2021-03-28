@@ -4,6 +4,7 @@ import requests
 class WeworkAddress:
     def __init__(self):
         self.token = self.get_token()
+        self.s = requests.Session()
 
     def get_token(self):
         url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken"
@@ -23,7 +24,7 @@ class WeworkAddress:
         r = requests.get(f"https://qyapi.weixin.qq.com/cgi-bin/user/get", params=params)
         return r.json()
 
-    def create_member(self, name: str, mobile: str, department: list):
+    def create_member(self, user_id: str, name: str, mobile: str, department: list):
         """
         创建成员
         :param name:
@@ -33,7 +34,7 @@ class WeworkAddress:
         """
         url = f"https://qyapi.weixin.qq.com/cgi-bin/user/create?access_token={self.token}"
         data = {
-            "userid": "m78001",
+            "userid": user_id,
             "name": name,
             "mobile": mobile,
             "department": department}
