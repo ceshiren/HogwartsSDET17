@@ -1,14 +1,14 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from itsdangerous import TimedJSONWebSignatureSerializer, SignatureExpired, BadSignature
 
 app = Flask(__name__)
 # 配置数据库的详细信息
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://cekai_17:ceshiren.com@182.92.129.158:3306/test_backend_17'
 # 初始化一个 db
 db = SQLAlchemy(app)
+app.config["SECRET_KEY"] = "TMP123"
 
-
-# 使用 db ，可以让 User 类映射到数据库中的 User表
 class User(db.Model):
     # 以下字段代表数据库中的表头
     # db.Integer 是整型，primary_key 代表主键，唯一标识一条数据，是一条数据的身份证
@@ -16,11 +16,25 @@ class User(db.Model):
     # db.String（80） 代表 80 个字符的字符串
     # unique 代表是不是唯一
     # nullable 是否可为空，如果为 False ，说明为必填项
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    description =  db.Column(db.String(120), unique=False, nullable=True)
+    username = db.Column(db.String(20), unique=True, nullable=False)
+    password = db.Column(db.String(30), unique=False, nullable=False)
+    email = db.Column(db.String(30), unique=False, nullable=False)
+    time = db.Column(db.Time(), unique=False, nullable=False)
 
-    def __repr__(self):
-        return f'<User {self.username} {self.description}>'
+    def generate_auth_token(self, expiration=600000):
+        s = TimedJSONWebSignatureSerializer(app.config['SECRET_KEY'], expires_in=expiration)
+        return s.dumps({'id': self.id})
+
+    @staticmethod
+    def verify_auth_token(token):
+        s = TimedJSONWebSignatureSerializer(app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except SignatureExpired:
+            return None  # valid token, but expired
+        except BadSignature:
+            return None  # invalid token
+        return User.query.get(data['id'])
 
 
 class Task(db.Model):
@@ -29,7 +43,6 @@ class Task(db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.name
-
 
 
 if __name__ == "__main__":
