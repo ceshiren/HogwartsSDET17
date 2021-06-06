@@ -12,6 +12,8 @@ auth 的 username 在登陆时，是用户名。但是在登陆后，是 token
 # 编写回调函数，当进行登陆时，会回调此函数
 @auth.verify_password
 def verify_password(username, password):
+    print(username)
+    print(password)
     # 初始化 auth
     from backend.data_base.user_table import User
     # 进行 token 校验

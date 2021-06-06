@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 
@@ -9,7 +10,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://cekai_17:ceshiren.com@1
 app.config["SECRETY_KEY"] = "SDET17"
 api = Api(app)
 db = SQLAlchemy(app)
-
+# 使用 CORS 解决同源问题
+CORS(app)
 
 def router():
     from backend.api.testcase import TestCaseAdd
