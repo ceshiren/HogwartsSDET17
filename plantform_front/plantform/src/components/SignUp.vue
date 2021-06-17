@@ -1,38 +1,40 @@
 <template>
-  <!-- class 属性，可以设置样式 -->
-  <div class="sign-up">
-    <h1>注册</h1>
-    <v-text-field
-      v-model="message4"
-      label="账号"
-      outlined
-      clearable
-    ></v-text-field>
-    <!-- type 是 html 的 inpu 的属性，可以设置为 password -->
-    <v-text-field
-      v-model="message4"
-      label="密码"
-      outlined
-      type="password"
-      clearable
-    ></v-text-field>
-    <v-text-field
-      v-model="message4"
-      label="邮箱"
-      outlined
-      clearable
-    ></v-text-field>
-    <v-btn depressed color="primary"> 注册 </v-btn>
-    <v-btn depressed @click="goLogin()"> 登陆 </v-btn>
-  </div>
+  <v-main>
+    <!-- class 属性，可以设置样式 -->
+    <div class="sign-up">
+      <h1>注册</h1>
+      <v-text-field
+        v-model="message4"
+        label="账号"
+        outlined
+        clearable
+      ></v-text-field>
+      <!-- type 是 html 的 inpu 的属性，可以设置为 password -->
+      <v-text-field
+        v-model="message4"
+        label="密码"
+        outlined
+        type="password"
+        clearable
+      ></v-text-field>
+      <v-text-field
+        v-model="message4"
+        label="邮箱"
+        outlined
+        clearable
+      ></v-text-field>
+      <v-btn depressed color="primary"> 注册 </v-btn>
+      <v-btn depressed @click="goLogin()"> 登陆 </v-btn>
+    </div>
+  </v-main>
 </template>
 <script>
 export default {
   methods: {
     goLogin() {
-      this.$router.push({name: "Login"})
-    }
-  }
+      this.$router.push({ name: "Login" });
+    },
+  },
 };
 </script>
 <style scoped>
