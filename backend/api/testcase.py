@@ -1,4 +1,5 @@
 # 定义测试用例接口
+import jenkins
 from flask import request
 from flask_restful import Resource
 
@@ -76,4 +77,14 @@ class TestCaseGet(Resource):
         test_cases = TestCase.query.all()
         # 对测试用例进行格式化
         format_test_cases = [i.as_dict() for i in test_cases]
-        return {"msg":"OK", "data": format_test_cases}
+        return {"msg": "OK", "data": format_test_cases}
+
+
+class TestCaseRun(Resource):
+    method_decorators = [auth.login_required]
+
+    def get(self):
+        server = jenkins.Jenkins('http://182.92.129.158:8889/', username="yuruotong1",
+                                 password="11a47e33c625927b4e89506110d2625ec4")
+        server.build_job("cekai17")
+        return {"msg": "OK", "errcode": 200}

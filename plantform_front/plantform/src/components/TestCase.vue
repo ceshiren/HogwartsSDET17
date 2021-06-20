@@ -10,11 +10,12 @@
         <v-toolbar-title>My CRUD</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
+        <v-btn color="primary" dark class="mb-2" @click="runItem()">
+          Run Item
+        </v-btn>
         <v-dialog v-model="dialog" max-width="500px">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-              New Item
-            </v-btn>
+            <v-btn class="mb-2" v-bind="attrs" v-on="on"> New Item </v-btn>
           </template>
           <v-card>
             <v-card-title>
@@ -63,6 +64,7 @@
               <v-btn color="blue darken-1" text @click="closeDelete"
                 >Cancel</v-btn
               >
+              <!-- 利用 editedItem 取出想要删除的数据项，取出其 nodeid -->
               <v-btn color="blue darken-1" text @click="deleteItemConfirm"
                 >OK</v-btn
               >
@@ -144,14 +146,17 @@ export default {
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
-
+    // 点击删除图标后，会调用此方法
     deleteItem(item) {
       this.editedIndex = this.desserts.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
+    // 删除确认函数
     deleteItemConfirm() {
+      let data = { nodeid: this.editedItem.nodeid };
+      this.$api.testcase.deleteTestCase(data);
       this.desserts.splice(this.editedIndex, 1);
       this.closeDelete();
     },
@@ -172,13 +177,22 @@ export default {
       });
     },
 
+    // 新增和保存都使用这面这个 save ，通过 editedIndex 进行判断
+    // 如果 this.editedIndex > -1 是编辑
+    // 否则是新增
     save() {
       if (this.editedIndex > -1) {
+        this.$api.testcase.updateTestCase(this.editedItem);
         Object.assign(this.desserts[this.editedIndex], this.editedItem);
       } else {
+        //  通过 this.editedItem 获取正在编辑的数据，进行新增
+        this.$api.testcase.addTestCase(this.editedItem);
         this.desserts.push(this.editedItem);
       }
       this.close();
+    },
+    runItem() {
+      this.$api.testcase.runTestCase();
     },
   },
 };

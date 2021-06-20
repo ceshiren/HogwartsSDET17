@@ -13,6 +13,7 @@ db = SQLAlchemy(app)
 # 使用 CORS 解决同源问题
 CORS(app)
 
+
 def router():
     from backend.api.testcase import TestCaseAdd
     api.add_resource(TestCaseAdd, '/testcase/add')
@@ -22,8 +23,12 @@ def router():
     api.add_resource(TestCaseGet, '/testcase/get')
     from backend.api.testcase import TestCaseUpdate
     api.add_resource(TestCaseUpdate, '/testcase/update')
+    from backend.api.testcase import TestCaseRun
+    api.add_resource(TestCaseRun, '/testcase/run')
     from backend.api.login import Login
     api.add_resource(Login, '/login')
+    from backend.api.signup import SignUp
+    api.add_resource(SignUp, '/signup')
 
 
 if __name__ == '__main__':
